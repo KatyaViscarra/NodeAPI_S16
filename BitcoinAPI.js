@@ -1,46 +1,22 @@
-const fetch = require('node-fetch');
+const fetch = require('axios');
 const fs = require('fs');
 
-/*fetch('https://api.coindesk.com/v1/bpi/currentprice.json')
+
+fetch('https://api.coindesk.com/v1/bpi/currentprice.json')
     .then((response) => {
-        return response.json();
-    })
-    .then((data) => {
-        console.log(data)
-    })
-    .catch((error) => {
-        console.log(error)
-    });*/
+        console.log('El documento ha sido creado');
 
-    /*async function getCountries() {
-        const response = await fetch('https://restcountries.com/v2/all');
-        const data = await response.json();
-        console.log(data)
-    }*/
+        var data = response.data.bpi
+        var currencyList = [
+                    `Currency: ${data.USD.code} | `+ `Rate: ${data.USD.rate} | `+ `Description: ${data.EUR.description}`+"\n",
+                    `Currency: ${data.GBP.code} | `+ `Rate: ${data.GBP.rate} | `+ `Description: ${data.GBP.description}`+"\n",
+                    `Currency: ${data.EUR.code} | `+ `Rate: ${data.EUR.rate} | `+ `Description: ${data.EUR.description}`+"\n",      
+                ]      
 
-    async function getBitcoin() {
-        try {        
-            const response = await fetch('https://api.coindesk.com/v1/bpi/currentprice.json');
-            const data = await response.json();
-            let currencyList = "";
-            Array.from(data).forEach(currency => {
-                currencyList+= `${currency['time']}, ${currency['bpi']}`;
-            });
-
-            //crear archivo
-            fs.writeFile('Bitcoin.txt', currencyList, (error) => {
-                if(error){
-                    console.log(error);
-                    return;
-                }
-                console.log('Se ha creado el archivo')
-            })
-
-            //console.log(data)
-        }catch(error){
-            console.log(error)
+       fs.writeFile('bitcoinCurrency.docx', currencyList.toString(), (error) =>{
+        if (error){
+            console.log(error);
+            return;
         }
-    }
-
-    //ejecutamos la funcion asincrona
-    getBitcoin();
+    })
+})
